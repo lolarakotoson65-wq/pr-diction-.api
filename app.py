@@ -18,7 +18,10 @@ def send():
 @app.route('/predict', methods=['GET'])
 def predict():
     if len(data) < 5:
-        return jsonify({"prediction": 2.0, "info": "not enough data"})
+        return jsonify({
+    "info": "données insuffisantes",
+    "prediction": 2.0
+})
 
     arr = np.array(data)
 
