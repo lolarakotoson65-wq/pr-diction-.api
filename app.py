@@ -12,10 +12,11 @@ def home():
 @app.route('/send', methods=['POST'])
 def send():
     try:
-        data_json = request.get_json(force=True)
+        raw = request.data.decode("utf-8")
+        print("RAW RECEIVED:", raw)
 
-        if not data_json or "value" not in data_json:
-            return jsonify({"error": "value manquant"}), 400
+        import json
+        data_json = json.loads(raw)
 
         value = float(data_json["value"])
         data.append(value)
@@ -29,6 +30,7 @@ def send():
     except Exception as e:
         return jsonify({
             "error": "invalid data",
+            "received": raw,
             "details": str(e)
         }), 400
 
