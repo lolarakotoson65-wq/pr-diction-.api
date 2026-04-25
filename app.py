@@ -11,9 +11,26 @@ def home():
 
 @app.route('/send', methods=['POST'])
 def send():
-    value = float(request.json.get("value"))
-    data.append(value)
-    return jsonify({"status": "added", "total": len(data)})
+    try:
+        data_json = request.get_json(force=True)
+
+        if not data_json or "value" not in data_json:
+            return jsonify({"error": "value manquant"}), 400
+
+        value = float(data_json["value"])
+        data.append(value)
+
+        return jsonify({
+            "status": "added",
+            "value": value,
+            "total": len(data)
+        })
+
+    except Exception as e:
+        return jsonify({
+            "error": "invalid data",
+            "details": str(e)
+        }), 400
 
 @app.route('/predict', methods=['GET'])
 def predict():
