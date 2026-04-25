@@ -13,10 +13,13 @@ def home():
 def send():
     try:
         raw = request.data.decode("utf-8")
-        print("RAW RECEIVED:", raw)
 
         import json
         data_json = json.loads(raw)
+
+        # 🔥 CORRECTION ICI
+        if isinstance(data_json, str):
+            data_json = json.loads(data_json)
 
         value = float(data_json["value"])
         data.append(value)
